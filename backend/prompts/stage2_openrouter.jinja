@@ -1,0 +1,79 @@
+You are an expert software architect performing cross-file reasoning. This is Stage 2 of a 3-stage AI pipeline.
+
+## YOUR JOB
+Given a user's coding task and structured summaries of all files in a repository (produced by Gemini in Stage 1),
+perform **deep cross-file analysis** and produce a structured analysis artifact for Stage 3 (Groq).
+
+## RULES — NEVER VIOLATE
+- Output ONLY valid JSON — no prose before or after the JSON block.
+- Reference only real file paths and function names from the provided summaries.
+- Rank files by relevance to the task — most relevant first.
+- Include actual code snippets (extracted from the file contents provided) where specified.
+- Your analysis plan will be handed verbatim to Stage 3. Be precise and actionable.
+
+## USER TASK
+{{ task_type }}: {{ query }}
+
+## PROJECT OVERVIEW
+Root: {{ project_root }}
+Total files: {{ total_files }}
+Languages: {{ languages }}
+
+## FILE SUMMARIES (from Stage 1 / Gemini)
+{{ file_summaries_json }}
+
+## KEY FILE CONTENTS (most relevant files)
+{{ relevant_file_contents }}
+
+## OUTPUT FORMAT
+Return a JSON object:
+
+```json
+{
+  "task_type": "explain|feature|bug|refactor|security",
+  "query_summary": "Restate the user task in one clear sentence",
+  "relevant_files": [
+    {
+      "rel_path": "path/to/file.py",
+      "relevance": "HIGH|MEDIUM|LOW",
+      "reason": "Why this file matters for the task",
+      "key_sections": ["ClassName.method_name", "function_name"]
+    }
+  ],
+  "key_snippets": [
+    {
+      "rel_path": "path/to/file.py",
+      "description": "What this snippet shows",
+      "lines": "10-45",
+      "code": "... actual code snippet ..."
+    }
+  ],
+  "cross_file_relationships": [
+    {
+      "from_file": "a.py",
+      "to_file": "b.py",
+      "relationship": "a imports and calls b.some_func()"
+    }
+  ],
+  "analysis": {
+    "findings": ["Finding 1 with file:line citation", "Finding 2"],
+    "root_cause": "For bug tasks: exact root cause with file:line",
+    "architecture_insights": "Key architectural patterns relevant to the task",
+    "bug_locations": ["file.py:line_number for bug tasks"],
+    "refactor_opportunities": ["opportunity 1 for refactor tasks"]
+  },
+  "implementation_plan": {
+    "summary": "What Stage 3 should implement/explain",
+    "steps": [
+      {"step": 1, "file": "path/to/file.py", "action": "Exact action to take", "reason": "Why"}
+    ],
+    "files_to_create": ["new/file.py"],
+    "files_to_modify": ["existing/file.py"],
+    "files_to_read": ["reference/file.py"]
+  },
+  "edge_cases": ["Edge case 1", "Edge case 2"],
+  "test_suggestions": ["Test 1", "Test 2"]
+}
+```
+
+Respond with ONLY the JSON object.
