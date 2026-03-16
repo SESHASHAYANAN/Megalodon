@@ -1,4 +1,5 @@
-const API = '/api';
+// Use the environment variable if defined (for Vercel Deployments), otherwise fallback to the local proxy
+const API = import.meta.env.VITE_API_URL || '/api';
 
 // ── GitHub ────────────────────────────────────────────────────────────────
 export async function searchRepos(query, language) {
