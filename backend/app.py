@@ -169,8 +169,13 @@ async def startup_health_check():
 
 @app.get("/")
 async def root():
-    """Redirect root to health check."""
-    return RedirectResponse(url="/api/health")
+    """Simple root endpoint to verify deployment."""
+    return {"message": "GitAI Backend is running!"}
+
+@app.get("/ping")
+async def ping():
+    """Simple ping endpoint."""
+    return {"ping": "pong"}
 
 
 @app.get("/api/health")
