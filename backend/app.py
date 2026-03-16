@@ -162,10 +162,15 @@ async def startup_health_check():
         if or_result["status"] == "ok":
             logger.info(f"  ✅ OpenRouter API key valid — model: {or_result['model']}")
         else:
-            logger.warning(f"  ❌ OpenRouter API key INVALID: {or_result.get('error', 'unknown')}")
-    except Exception as e:
+        except Exception as e:
         logger.warning(f"  ❌ OpenRouter client init failed: {e}")
     logger.info("🔑 API key validation complete.")
+
+
+@app.get("/")
+async def root():
+    """Redirect root to health check."""
+    return RedirectResponse(url="/api/health")
 
 
 @app.get("/api/health")
