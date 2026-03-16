@@ -1133,7 +1133,9 @@ async def push_to_github(req: GitHubPushRequest, request: Request):
 # ── GitHub OAuth ──────────────────────────────────────────────────────────────
 
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
-FRONTEND_CALLBACK = "http://localhost:5173/auth/github/callback"
+import os
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+FRONTEND_CALLBACK = f"{FRONTEND_URL.rstrip('/')}/auth/github/callback"
 
 
 @app.get("/api/auth/github")
