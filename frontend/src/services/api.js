@@ -29,9 +29,13 @@ export async function getFileContent(owner, repo, path) {
 }
 
 // ── GitHub OAuth ──────────────────────────────────────────────────────────
+// Auth redirect must go directly to the backend (not through Vercel proxy)
+// because Vercel Deployment Protection blocks proxy requests.
+const BACKEND_URL = import.meta.env.VITE_API_URL || API;
+
 export function getAuthUrl() {
     // This URL triggers a 302 redirect to GitHub's authorize page
-    return `${API}/auth/github`;
+    return `${BACKEND_URL}/auth/github`;
 }
 
 export async function getGitHubUser() {

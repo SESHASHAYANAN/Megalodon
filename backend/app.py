@@ -1210,7 +1210,8 @@ async def auth_github_callback(code: str):
         key="github_token",
         value=access_token,
         httponly=True,
-        samesite="lax",
+        samesite="none",
+        secure=True,
         max_age=60 * 60 * 24 * 30,  # 30 days
         path="/",
     )
@@ -1282,7 +1283,8 @@ async def auth_github_exchange(request: Request):
         key="github_token",
         value=access_token,
         httponly=True,
-        samesite="lax",
+        samesite="none",
+        secure=True,
         max_age=60 * 60 * 24 * 30,
         path="/",
     )
