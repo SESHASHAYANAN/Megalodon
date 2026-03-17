@@ -5,25 +5,25 @@ const API = import.meta.env.VITE_API_URL || '/api';
 export async function searchRepos(query, language) {
     const params = new URLSearchParams({ q: query });
     if (language) params.set('language', language);
-    const r = await fetch(`${API}/github/search?${params}`);
+    const r = await fetch(`${API}/github/search?${params}`, { credentials: 'include' });
     if (!r.ok) throw new Error('Search failed');
     return r.json();
 }
 
 export async function getRepo(owner, repo) {
-    const r = await fetch(`${API}/github/repo/${owner}/${repo}`);
+    const r = await fetch(`${API}/github/repo/${owner}/${repo}`, { credentials: 'include' });
     if (!r.ok) throw new Error('Repo not found');
     return r.json();
 }
 
 export async function getRepoTree(owner, repo) {
-    const r = await fetch(`${API}/github/tree/${owner}/${repo}`);
+    const r = await fetch(`${API}/github/tree/${owner}/${repo}`, { credentials: 'include' });
     if (!r.ok) throw new Error('Tree not found');
     return r.json();
 }
 
 export async function getFileContent(owner, repo, path) {
-    const r = await fetch(`${API}/github/file/${owner}/${repo}/${path}`);
+    const r = await fetch(`${API}/github/file/${owner}/${repo}/${path}`, { credentials: 'include' });
     if (!r.ok) throw new Error('File not found');
     return r.json();
 }
