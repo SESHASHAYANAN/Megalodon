@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { FiGithub, FiAlertCircle } from 'react-icons/fi'
 
+// Use the same API base URL as all other API calls
+const API = import.meta.env.VITE_API_URL || '/api';
+
 /**
  * GitHubCallback — handles the return from GitHub OAuth.
  *
@@ -42,7 +45,7 @@ export default function GitHubCallback() {
         // Flow B — GitHub redirected here with a code; exchange it now
         if (code) {
             setStatus('Exchanging token…')
-            fetch('/api/auth/github/exchange', {
+            fetch(`${API}/auth/github/exchange`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
