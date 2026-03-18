@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, Component } from 'react'
 import { FiSearch, FiBookOpen, FiGitBranch, FiTarget, FiCheckCircle, FiMic, FiVolume2, FiSend, FiLoader, FiChevronRight, FiRotateCw, FiCode, FiZap, FiFolder, FiFile, FiAlertTriangle } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
+import { API } from '../services/api'
 
 const MODES = [
     { id: 'learn', label: 'Learn', icon: FiBookOpen, desc: 'AI explains your codebase simply', color: '#7c6aff' },
@@ -87,9 +88,10 @@ function LearningInner() {
         setMessages([])
 
         try {
-            const response = await fetch('/api/learning/scan', {
+            const response = await fetch(`${API}/learning/scan`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl.trim() }),
             })
             if (!response.ok) throw new Error(`Scan failed: ${response.status}`)
@@ -111,9 +113,10 @@ function LearningInner() {
         setInput('')
 
         try {
-            const response = await fetch('/api/learning/explain', {
+            const response = await fetch(`${API}/learning/explain`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl, question: prompt }),
             })
             if (!response.ok) throw new Error(`Failed: ${response.status}`)
@@ -131,9 +134,10 @@ function LearningInner() {
     const runQualityAnalysis = useCallback(async () => {
         setIsProcessing(true)
         try {
-            const response = await fetch('/api/learning/quality', {
+            const response = await fetch(`${API}/learning/quality`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl }),
             })
             if (!response.ok) throw new Error(`Analysis failed: ${response.status}`)
@@ -150,9 +154,10 @@ function LearningInner() {
     const runFocusAnalysis = useCallback(async () => {
         setIsProcessing(true)
         try {
-            const response = await fetch('/api/learning/focus', {
+            const response = await fetch(`${API}/learning/focus`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl }),
             })
             if (!response.ok) throw new Error(`Focus failed: ${response.status}`)

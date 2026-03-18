@@ -5,6 +5,7 @@ import {
     FiCheck, FiX, FiArrowRight, FiCode, FiDatabase, FiServer,
     FiMonitor, FiLayers, FiFile, FiFolder, FiZap
 } from 'react-icons/fi'
+import { API } from '../services/api'
 
 const MODES = [
     { id: 'video', label: 'Video', icon: FiVideo, desc: 'Generate a 50s project walkthrough video', color: '#7c6aff' },
@@ -128,9 +129,10 @@ function VisualizeInner() {
 
         try {
             // Call backend for repo analysis (or use the AI chat endpoint as fallback)
-            const r = await fetch('/api/ai/chat', {
+            const r = await fetch(`${API}/ai/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({
                     message: `You are a viral short-form video director for Instagram Reels. Analyze this GitHub repo and create a reel script. Repo: ${repoUrl.trim()}
 
@@ -197,9 +199,10 @@ Return ONLY valid JSON with this structure:
         if (overview || overviewLoading) return
         setOverviewLoading(true)
         try {
-            const r = await fetch('/api/visualize/overview', {
+            const r = await fetch(`${API}/visualize/overview`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl.trim() }),
             })
             const data = await r.json()
@@ -216,9 +219,10 @@ Return ONLY valid JSON with this structure:
         if (errors || errorsLoading) return
         setErrorsLoading(true)
         try {
-            const r = await fetch('/api/visualize/errors', {
+            const r = await fetch(`${API}/visualize/errors`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl.trim() }),
             })
             const data = await r.json()
@@ -235,9 +239,10 @@ Return ONLY valid JSON with this structure:
         if (dataflow || dataflowLoading) return
         setDataflowLoading(true)
         try {
-            const r = await fetch('/api/visualize/dataflow', {
+            const r = await fetch(`${API}/visualize/dataflow`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ repo_url: repoUrl.trim() }),
             })
             const data = await r.json()
